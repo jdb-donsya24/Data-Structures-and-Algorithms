@@ -1,0 +1,211 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class MainClass {
+
+    public static void main(String[] args) {
+
+        Scanner in = new Scanner(System.in);
+        SubAbstractClass students = new SubAbstractClass();
+
+        int choice;
+
+        do {
+            System.out.println("\n===== STUDENT HASHMAP SYSTEM =====");
+            System.out.println("Press 1 - Add Student");
+            System.out.println("Press 2 - Update Student");
+            System.out.println("Press 3 - Remove Student");
+            System.out.println("Press 4 - Display All Students");
+            System.out.println("Press 5 - Display Specific Student");
+            System.out.println("Press 6 - Search Key");
+            System.out.println("Press 7 - Display Total");
+            System.out.println("Press 8 - Clear All");
+            System.out.println("Press 0 - Exit");
+            System.out.print("\nEnter your choice: ");
+
+            choice = in.nextInt();
+
+            switch (choice) {
+
+                case 1:
+                    System.out.print("Enter Student ID: ");
+                    int addID = in.nextInt();
+                    in.nextLine();
+
+                    System.out.print("Enter Student Name: ");
+                    String name = in.nextLine();
+
+                    students.addStudent(addID, name);
+                    break;
+
+                case 2:
+                    System.out.print("Enter Student ID to Update: ");
+                    int updateID = in.nextInt();
+                    in.nextLine();
+
+                    System.out.print("Enter New Student Name: ");
+                    String newName = in.nextLine();
+
+                    students.updateStudent(updateID, newName);
+                    break;
+
+                case 3:
+                    System.out.print("Enter Student ID to Remove: ");
+                    int removeID = in.nextInt();
+
+                    students.removeStudent(removeID);
+                    break;
+
+                case 4:
+                    students.displayAll();
+                    break;
+
+                case 5:
+                    System.out.print("Enter Student ID: ");
+                    int specificID = in.nextInt();
+
+                    students.displaySpecific(specificID);
+                    break;
+
+                case 6:
+                    System.out.print("Enter Student ID to Search: ");
+                    int searchID = in.nextInt();
+
+                    if (students.searchKey(searchID)) {
+                        System.out.println("Student ID exists!");
+                    } else {
+                        System.out.println("Student ID does not exist!");
+                    }
+                    break;
+
+                case 7:
+                    System.out.println("Total Students: "
+                            + students.displayTotal());
+                    break;
+
+                case 8:
+                    students.clearAll();
+                    break;
+
+                case 0:
+                    System.out.println("Exiting Program...");
+                    break;
+
+                default:
+                    System.out.println("Invalid Choice! Try Again.");
+            }
+
+        } while (choice != 0);
+
+        in.close();
+    }
+}
+
+
+public abstract class AbstractClass {
+
+    public abstract void addStudent(int id, String name);
+
+    public abstract void updateStudent(int id, String name);
+
+    public abstract void removeStudent(int id);
+
+    public abstract void displayAll();
+
+    public abstract void displaySpecific(int id);
+
+    public abstract boolean searchKey(int id);
+
+    public abstract int displayTotal();
+
+    public abstract void clearAll();
+}
+
+
+public class SubAbstractClass extends AbstractClass {
+
+    private HashMap<Integer, String> students =
+            new HashMap<Integer, String>();
+
+ 
+    @Override
+    public void addStudent(int id, String name) {
+
+        if (students.containsKey(id)) {
+            System.out.println("Student ID already exists!");
+        } else {
+            students.put(id, name);
+            System.out.println("Student added successfully!");
+        }
+    }
+
+
+    @Override
+    public void updateStudent(int id, String name) {
+
+        if (students.containsKey(id)) {
+            students.put(id, name);
+            System.out.println("Student updated successfully!");
+        } else {
+            System.out.println("Student ID not found!");
+        }
+    }
+
+  
+    @Override
+    public void removeStudent(int id) {
+
+        if (students.containsKey(id)) {
+            students.remove(id);
+            System.out.println("Student removed successfully!");
+        } else {
+            System.out.println("Student ID not found!");
+        }
+    }
+
+ 
+    @Override
+    public void displayAll() {
+
+        if (students.isEmpty()) {
+            System.out.println("No students available.");
+        } else {
+            System.out.println("\nAll Students:");
+            System.out.println(students);
+        }
+    }
+
+  
+    @Override
+    public void displaySpecific(int id) {
+
+        if (students.containsKey(id)) {
+            System.out.println("Student ID: " + id);
+            System.out.println("Student Name: " + students.get(id));
+        } else {
+            System.out.println("Student ID not found!");
+        }
+    }
+
+   
+    @Override
+    public boolean searchKey(int id) {
+
+        return students.containsKey(id);
+    }
+
+    
+    @Override
+    public int displayTotal() {
+
+        return students.size();
+    }
+
+  
+    @Override
+    public void clearAll() {
+
+        students.clear();
+        System.out.println("All students have been cleared!");
+    }
+}
